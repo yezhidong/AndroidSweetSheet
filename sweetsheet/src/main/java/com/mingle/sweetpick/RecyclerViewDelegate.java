@@ -120,10 +120,20 @@ public class RecyclerViewDelegate extends Delegate  {
 
     }
 
+    public void notifyDataSetChanged() {
+        mMenuRVAdapter.notifyDataSetChanged();
+    }
+
     protected void show() {
         super.show();
         ViewGroup.LayoutParams lp =
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+
+        if(mRootView.getParent()!= null){
+            mParentVG.removeView(mRootView);
+        }
+
         mParentVG.addView(mRootView, lp);
         mSweetView.show();
     }
@@ -148,11 +158,16 @@ public class RecyclerViewDelegate extends Delegate  {
         @Override
         public void onEnd() {
 
-            if(mIsDragEnable) {
-                sliderIm.setVisibility(View.VISIBLE);
-                sliderIm.circularReveal(sliderIm.getWidth() / 2, sliderIm.getHeight() / 2, 0, sliderIm.getWidth());
+
+            if(  mStatus==SweetSheet.Status.SHOWING) {
+
+                mStatus = SweetSheet.Status.SHOW;
+
+                if(mIsDragEnable) {
+                    sliderIm.setVisibility(View.VISIBLE);
+                    sliderIm.circularReveal(sliderIm.getWidth() / 2, sliderIm.getHeight() / 2, 0, sliderIm.getWidth());
+                }
             }
-            mStatus = SweetSheet.Status.SHOW;
 
         }
 
